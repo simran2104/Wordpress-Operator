@@ -1,0 +1,9 @@
+domain: example.com
+layout:
+- go.kubebuilder.io/v3
+plugins:
+  manifests.sdk.operatorframework.io/v2: {}
+  scorecard.sdk.operatorframework.io/v2: {}
+projectName: assignment-1
+repo: github.com/simran2104/Wordpress-Operator
+version: "3"
