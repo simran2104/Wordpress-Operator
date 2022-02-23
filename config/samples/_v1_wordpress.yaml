@@ -4,3 +4,4 @@ metadata:
   name: wordpress-sample
 spec:
   # TODO(user): Add fields here
+  sqlrootpassword: "abc"
