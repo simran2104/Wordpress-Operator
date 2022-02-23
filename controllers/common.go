@@ -1,9 +1,8 @@
-package controller
+package controllers
 
 import (
 	"context"
 
-	"github.com/cloudflare/cfssl/log"
 	examplecomv1 "github.com/simran2104/Wordpress-Operator/api/v1"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -19,7 +18,7 @@ func (r *WordpressReconciler) ensureDeployment(request reconcile.Request,
 
 	found := &appsv1.Deployment{}
 
-	err := r.client.Get(context.TODO(), types.NamespacedName{
+	err := r.Client.Get(context.TODO(), types.NamespacedName{
 		Name:      dep.Name,
 		Namespace: instance.Namespace,
 	}, found)
@@ -28,7 +27,7 @@ func (r *WordpressReconciler) ensureDeployment(request reconcile.Request,
 
 		// Create the deployment
 		log.Info("Creating a new Deployment", "Deployment.Namespace", dep.Namespace, "Deployment.Name", dep.Name)
-		err = r.client.Create(context.TODO(), dep)
+		err = r.Client.Create(context.TODO(), dep)
 
 		if err != nil {
 			// Deployment failed
@@ -53,7 +52,7 @@ func (r *WordpressReconciler) ensureService(request reconcile.Request,
 	s *corev1.Service,
 ) (*reconcile.Result, error) {
 	found := &corev1.Service{}
-	err := r.client.Get(context.TODO(), types.NamespacedName{
+	err := r.Client.Get(context.TODO(), types.NamespacedName{
 		Name:      s.Name,
 		Namespace: instance.Namespace,
 	}, found)
@@ -61,7 +60,7 @@ func (r *WordpressReconciler) ensureService(request reconcile.Request,
 
 		// Create the service
 		log.Info("Creating a new Service", "Service.Namespace", s.Namespace, "Service.Name", s.Name)
-		err = r.client.Create(context.TODO(), s)
+		err = r.Client.Create(context.TODO(), s)
 
 		if err != nil {
 			// Creation failed
@@ -87,7 +86,7 @@ func (r *WordpressReconciler) ensurePVC(request reconcile.Request,
 
 	found := &corev1.PersistentVolumeClaim{}
 
-	err := r.client.Get(context.TODO(), types.NamespacedName{
+	err := r.Client.Get(context.TODO(), types.NamespacedName{
 		Name:      s.Name,
 		Namespace: instance.Namespace,
 	}, found)
@@ -95,7 +94,7 @@ func (r *WordpressReconciler) ensurePVC(request reconcile.Request,
 	if err != nil && errors.IsNotFound(err) {
 		// Create the PVC
 		log.Info("Creating a new PVC", "PVC.Namespace", s.Namespace, "PVC.Name", s.Name)
-		err = r.client.Create(context.TODO(), s)
+		err = r.Client.Create(context.TODO(), s)
 
 		if err != nil {
 			// Creation failed

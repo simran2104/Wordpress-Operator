@@ -78,7 +78,7 @@ func (r *WordpressReconciler) deploymentForMysql(cr *examplecomv1.Wordpress) *ap
 		},
 	}
 
-	controllerutil.SetControllerReference(cr, dep, r.scheme)
+	controllerutil.SetControllerReference(cr, dep, r.Scheme)
 	return dep
 }
 
@@ -109,7 +109,7 @@ func (r *WordpressReconciler) pvcForMysql(cr *examplecomv1.Wordpress) *corev1.Pe
 		},
 	}
 
-	controllerutil.SetControllerReference(cr, pvc, r.scheme)
+	controllerutil.SetControllerReference(cr, pvc, r.Scheme)
 	return pvc
 
 }
@@ -144,7 +144,7 @@ func (r *WordpressReconciler) serviceForMysql(cr *examplecomv1.Wordpress) *corev
 		},
 	}
 
-	controllerutil.SetControllerReference(cr, ser, r.scheme)
+	controllerutil.SetControllerReference(cr, ser, r.Scheme)
 	return ser
 
 }
@@ -152,7 +152,7 @@ func (r *WordpressReconciler) serviceForMysql(cr *examplecomv1.Wordpress) *corev
 func (r *WordpressReconciler) isMysqlUp(v *examplecomv1.Wordpress) bool {
 	deployment := &appsv1.Deployment{}
 
-	err := r.client.Get(context.TODO(), types.NamespacedName{
+	err := r.Client.Get(context.TODO(), types.NamespacedName{
 		Name:      "wordpress-mysql",
 		Namespace: v.Namespace,
 	}, deployment)

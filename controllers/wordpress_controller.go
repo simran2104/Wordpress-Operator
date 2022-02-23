@@ -10,6 +10,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
+	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/handler"
@@ -21,8 +22,8 @@ import (
 
 // WordpressReconciler reconciles a Wordpress object
 type WordpressReconciler struct {
-	client client.Client
-	scheme *runtime.Scheme
+	Client client.Client
+	Scheme *runtime.Scheme
 }
 
 var log = logf.Log.WithName("controller_wordpress")
@@ -40,7 +41,7 @@ func Add(mgr manager.Manager) error {
 
 // newReconciler returns a new reconcile.Reconciler
 func newReconciler(mgr manager.Manager) reconcile.Reconciler {
-	return &WordpressReconciler{client: mgr.GetClient(), scheme: mgr.GetScheme()}
+	return &WordpressReconciler{Client: mgr.GetClient(), Scheme: mgr.GetScheme()}
 }
 
 // add adds a new Controller to mgr with r as the reconcile.Reconciler
@@ -118,7 +119,7 @@ func (r *WordpressReconciler) Reconcile(ctx context.Context, request reconcile.R
 	// Fetch the Wordpress instance
 	//	instance := &examplecomv1.Wordpress{}
 	wordpress := &examplecomv1.Wordpress{}
-	err := r.client.Get(context.TODO(), request.NamespacedName, wordpress)
+	err := r.Client.Get(context.TODO(), request.NamespacedName, wordpress)
 	if err != nil {
 		if errors.IsNotFound(err) {
 			// Request object not found, could have been deleted after reconcile request.
@@ -177,4 +178,11 @@ func (r *WordpressReconciler) Reconcile(ctx context.Context, request reconcile.R
 	}
 
 	return reconcile.Result{}, nil
+}
+
+// SetupWithManager sets up the controller with the Manager.
+func (r *WordpressReconciler) SetupWithManager(mgr ctrl.Manager) error {
+	return ctrl.NewControllerManagedBy(mgr).
+		For(&examplecomv1.Wordpress{}).
+		Complete(r)
 }

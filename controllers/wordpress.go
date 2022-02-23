@@ -1,4 +1,4 @@
-package wordpress
+package controllers
 
 import (
 	examplecomv1 "github.com/simran2104/Wordpress-Operator/api/v1"
@@ -79,7 +79,7 @@ func (r *WordpressReconciler) deploymentForWordpress(cr *examplecomv1.Wordpress)
 		},
 	}
 
-	controllerutil.SetControllerReference(cr, dep, r.scheme)
+	controllerutil.SetControllerReference(cr, dep, r.Scheme)
 	return dep
 
 }
@@ -114,7 +114,7 @@ func (r *WordpressReconciler) serviceForWordpress(cr *examplecomv1.Wordpress) *c
 		},
 	}
 
-	controllerutil.SetControllerReference(cr, ser, r.scheme)
+	controllerutil.SetControllerReference(cr, ser, r.Scheme)
 	return ser
 
 }
@@ -146,7 +146,7 @@ func (r *WordpressReconciler) pvcForWordpress(cr *examplecomv1.Wordpress) *corev
 		},
 	}
 
-	controllerutil.SetControllerReference(cr, pvc, r.scheme)
+	controllerutil.SetControllerReference(cr, pvc, r.Scheme)
 	return pvc
 
 }
